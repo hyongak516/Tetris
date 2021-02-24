@@ -16,15 +16,17 @@
             android:text="App Name : Tetris\nLanguage : Java \nTool : Android Studio\nDate : 2021.02.15\nDeveloper : Hosung.Kim"
             android:textStyle="italic"
             android:typeface="serif"
+            android:textColor="@color/dark_blue"
             android:textSize="15pt" />
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Contact : hyongak516@icloud.com"
+            android:text="Contact : hyongak516@icloud.com\nGitHub : https://github.com/hyongak516"
             android:textStyle="italic"
             android:typeface="serif"
-            android:textSize="10pt" />
+            android:textColor="@color/dark_blue"
+            android:textSize="9pt" />
     </LinearLayout>
 
     <Button

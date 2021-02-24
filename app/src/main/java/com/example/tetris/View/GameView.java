@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.tetris.R;
+import com.example.tetris.common.SingleTonManager;
 
 import java.util.Random;
 
@@ -94,7 +95,7 @@ public class GameView extends View {
     private int         mScreenWidth;
     private int         mScreenHeight;
 
-    private int         mScore = 0;
+    public  int         mScore = 0;
 
     private Random      mRandom;
 
@@ -104,6 +105,8 @@ public class GameView extends View {
 
     private int         mTetrominoNull = 0;
     private int         IsFullLine = 0;  //  void checkFullLine
+    private int         mNum=0;          //  openactivity
+    private int         Timer=0;         //  openactivity
 
     private Paint       mBlackPaint;
     private Paint       mGrayPaintL;
@@ -115,6 +118,8 @@ public class GameView extends View {
     private Bitmap      mBitmap;
 
     private MediaPlayer mMediaPlayerMainSound;
+
+    private GameListener mGameListener;
 
     public GameView(Context context) {
         super(context);
@@ -223,9 +228,13 @@ public class GameView extends View {
             super.handleMessage(msg);
 
             if (isGameOver()) {
+                Timer=Timer+1;
                 drawBackground();
                 mCanvas.drawText("Game Over", mScreenWidth*1/10, mScreenHeight/3, mRedPaint);
                 mCanvas.drawText(mScore/25*9 + "초동안 생존하셨습니다.", mScreenWidth*1/10, mScreenHeight*2/5, mYellowPaint);
+                if (Timer > 5) {
+                    openGameOverActivity();
+                }
             } else {
                 drawBackground();
                 drawMap();
@@ -258,6 +267,10 @@ public class GameView extends View {
             mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
         }
     };
+
+    public void setGameListener(GameListener gl) {
+        mGameListener = gl;
+    }
 
     void drawTetromino() {
         for (int i=0; i<4; i++) {
@@ -453,6 +466,14 @@ public class GameView extends View {
             mMediaPlayerMainSound.release();
             mMediaPlayerMainSound = null;
         }
+    }
+
+    void openGameOverActivity() {
+        if (mNum == 0) {
+            SingleTonManager.getInstance().mScore = mScore;
+            mGameListener.openActivity();
+        }
+        mNum = mNum + 1;
     }
 
     @Override

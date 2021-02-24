@@ -16,7 +16,7 @@ import com.example.tetris.R;
 public class MainActivity extends AppCompatActivity {
     private Button      mGameStartBtn;  //  게임 시작 버튼
     private Button      mRankingBtn;    //  랭킹 버튼
-    //private Button      mInfoBtn;       //  정보 버튼
+    private Button      mInfoBtn;       //  정보 버튼
     private Button      mGameShutBtn;   //  게임 종료 버튼
 
     @Override
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         mGameStartBtn  = findViewById(R.id.main_button1);
         mRankingBtn    = findViewById(R.id.main_button2);
-        //mInfoBtn       = findViewById(R.id.main_button3);
+        mInfoBtn       = findViewById(R.id.main_button3);
         mGameShutBtn   = findViewById(R.id.main_button4);
 
         mGameStartBtn.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*mInfoBtn.setOnClickListener(new View.OnClickListener() {
+        mInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //              랭킹화면 RankingActivity로 이동======================================================
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 //              ===================================================================================]
 
             }
-        });*/
+        });
 
         mGameShutBtn.setOnClickListener(new View.OnClickListener() {
             @Override

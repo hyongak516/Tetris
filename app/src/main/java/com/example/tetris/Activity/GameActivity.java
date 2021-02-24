@@ -3,15 +3,17 @@ package com.example.tetris.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.tetris.R;
 import com.example.tetris.View.GameView;
+import com.example.tetris.View.GameListener;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements GameListener {
 
     private Button mLeftBtn;
     private Button mRotateRBtn;
@@ -19,8 +21,6 @@ public class GameActivity extends AppCompatActivity {
     private Button mRightBtn;
 
     private GameView mGameView;
-
-    public int getScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,8 @@ public class GameActivity extends AppCompatActivity {
                 mGameView.moveRight();
             }
         });
+
+        mGameView.setGameListener(this);
     }
 
     @Override
@@ -69,4 +71,16 @@ public class GameActivity extends AppCompatActivity {
         mGameView.destroy();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+    }
+
+    @Override
+    public void openActivity() {
+        Intent intent = new Intent(this, GameOverActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getBaseContext().startActivity(intent);
+    }
 }
