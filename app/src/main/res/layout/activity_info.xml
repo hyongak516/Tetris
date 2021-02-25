@@ -22,7 +22,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Contact : hyongak516@icloud.com\nGitHub : https://github.com/hyongak516"
+            android:text="Contact : hyongak516@mail.hongik.ac.kr\nGitHub : https://github.com/hyongak516"
             android:textStyle="italic"
             android:typeface="serif"
             android:textColor="@color/dark_blue"
