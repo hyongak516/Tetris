@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:alpha="0.7"
-            android:text="좌로\n이동" />
+            android:text="←" />
+            <!--android:text="좌로\n이동"-->
 
         <Button
             android:id="@+id/game_button2"
@@ -30,7 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:alpha="0.7"
-            android:text="반시계\n방향" />
+            android:text="↶"/>
+            <!--android:text="반시계\n방향"-->
+
 
         <Button
             android:id="@+id/game_button3"
@@ -38,7 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:alpha="0.7"
-            android:text="시계\n방향" />
+            android:text="↷"/>
+            <!--android:text="시계\n방향"-->
 
         <Button
             android:id="@+id/game_button4"
@@ -46,7 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:alpha="0.7"
-            android:text="우로\n이동" />
+            android:text="→" />
+            <!--android:text="우로\n이동"-->
 
     </LinearLayout>
 

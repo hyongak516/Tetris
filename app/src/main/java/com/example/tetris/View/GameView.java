@@ -1,4 +1,4 @@
-package com.example.tetris.View;
+ package com.example.tetris.View;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -217,7 +217,7 @@ public class GameView extends View {
         mMediaPlayerMainSound.setVolume(2.0f, 2.0f);
         mMediaPlayerMainSound.start();
         mMediaPlayerMainSound.setLooping(true);
-//      ============================================================================================
+//      ===========================================================================================]
 
         mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
     }
@@ -370,6 +370,7 @@ public class GameView extends View {
                 mTetrominoX = mTetrominoX - 1;
                 drawTetromino();
                 drawBackgroundnet();
+                invalidate();
             }
         }
     }
@@ -391,6 +392,7 @@ public class GameView extends View {
                 mTetrominoX = mTetrominoX + 1;
                 drawTetromino();
                 drawBackgroundnet();
+                invalidate();
             }
         }
     }
@@ -424,6 +426,7 @@ public class GameView extends View {
                 drawMap();
                 drawTetromino();
                 drawBackgroundnet();
+                invalidate();
             }
         }
     }
@@ -457,6 +460,7 @@ public class GameView extends View {
                 drawMap();
                 drawTetromino();
                 drawBackgroundnet();
+                invalidate();
             }
         }
     }
