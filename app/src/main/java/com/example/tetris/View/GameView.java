@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
@@ -33,7 +34,6 @@ class Map {
 }
 
 public class GameView extends View {
-
 //  7  Tetromino
 //   1      2      3      4      5      6      7
 //  ....   ....   ....   ....   ....   ....   ....
@@ -94,6 +94,7 @@ public class GameView extends View {
 
     private int         mScreenWidth;
     private int         mScreenHeight;
+    private int         mViewHeight;
 
     public  int         mScore = 0;
 
@@ -180,6 +181,8 @@ public class GameView extends View {
 
         mScreenWidth   = metrics.widthPixels;
         mScreenHeight  = metrics.heightPixels;
+
+        Log.d("hosung.kim", "mScreenWidth ==> " + mScreenWidth);
 //      ===========================================================================================]
 
 //      Bitmap======================================================================================
@@ -222,6 +225,13 @@ public class GameView extends View {
         mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        mViewHeight = this.getMeasuredHeight();
+        Log.d("hosung.kim", "button height ==> " + (mScreenHeight - mViewHeight));
+    }
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -230,8 +240,9 @@ public class GameView extends View {
             if (isGameOver()) {
                 Timer=Timer+1;
                 drawBackground();
-                mCanvas.drawText("Game Over", mScreenWidth*1/10, mScreenHeight/3, mRedPaint);
-                mCanvas.drawText(mScore/25*9 + "초동안 생존하셨습니다.", mScreenWidth*1/10, mScreenHeight*2/5, mYellowPaint);
+                mCanvas.drawText("Game Over", mScreenWidth*1/10, mViewHeight/3, mRedPaint);
+                mCanvas.drawText(mScore/25*9 + "초동안 생존하셨습니다.", mScreenWidth*1/10, mViewHeight*2/5, mYellowPaint);
+                mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
                 if (Timer > 5) {
                     openGameOverActivity();
                 }
@@ -262,9 +273,9 @@ public class GameView extends View {
                 drawBackgroundnet();
                 checkFullLine();
                 mScore = mScore + 1;
+                mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
             }
             invalidate();
-            mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
         }
     };
 
@@ -277,7 +288,7 @@ public class GameView extends View {
             for (int j=0; j<4; j++) {
                 if (mTetromino[mTetrominoNum][j][i] == MAP_FILL) {
                     if (0 < i + 4 + mTetrominoX && i + 4 + mTetrominoX < 11 && 3 < j + mTetrominoY && j + mTetrominoY < 25) {
-                        mCanvas.drawRect(mScreenWidth * (i + 3 + mTetrominoX) / 10, mScreenHeight * (j + mTetrominoY - 4) / 20, mScreenWidth * (i + 4 + mTetrominoX) / 10, mScreenHeight * (j + mTetrominoY-3) / 20, mPaint[mTetrominoNum+1]);
+                        mCanvas.drawRect(mScreenWidth * (i + 3 + mTetrominoX) / 10, mViewHeight * (j + mTetrominoY - 4) / 20, mScreenWidth * (i + 4 + mTetrominoX) / 10, mViewHeight * (j + mTetrominoY-3) / 20, mPaint[mTetrominoNum+1]);
                     }
                 }
             }
@@ -307,7 +318,7 @@ public class GameView extends View {
     void drawBackgroundnet() {
         for (int i=0; i<10; i++) {
             for (int j = 0; j < 20; j++) {
-                mCanvas.drawRect(mScreenWidth * i / 10, mScreenHeight * j / 20, mScreenWidth * (i + 1) / 10, mScreenHeight * (j + 1) / 20, mGrayPaintL);
+                mCanvas.drawRect(mScreenWidth * i / 10, mViewHeight * j / 20, mScreenWidth * (i + 1) / 10, mViewHeight * (j + 1) / 20, mGrayPaintL);
             }
         }
     }
@@ -316,7 +327,7 @@ public class GameView extends View {
         for (int i=1; i<11; i++) {
             for (int j=4; j<25; j++) {
                 if (mMap[i][j].Fill == MAP_FILL) {
-                    mCanvas.drawRect(mScreenWidth * (i - 1) / 10, mScreenHeight * (j - 4) / 20, mScreenWidth * i / 10, mScreenHeight * (j - 3) / 20, mPaint[mMap[i][j].PaintNum]);
+                    mCanvas.drawRect(mScreenWidth * (i - 1) / 10, mViewHeight * (j - 4) / 20, mScreenWidth * i / 10, mViewHeight * (j - 3) / 20, mPaint[mMap[i][j].PaintNum]);
                 }
             }
         }
@@ -397,6 +408,28 @@ public class GameView extends View {
         }
     }
 
+    public void moveDown() {
+        if (isGameOver()) {
+        } else {
+            int ShapeFillorNot = 0;
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    if (mTetromino[mTetrominoNum][j][i] == 1) {
+                        ShapeFillorNot = ShapeFillorNot + mMap[i + 4 + mTetrominoX][j + mTetrominoY + 1].Fill;
+                    }
+                }
+            }
+            if (ShapeFillorNot == 0) {
+                drawBackground();
+                drawMap();
+                mTetrominoY = mTetrominoY + 1;
+                drawTetromino();
+                drawBackgroundnet();
+                invalidate();
+            }
+        }
+    }
+
     public void rotateClockWise() {
         if (isGameOver()) {
         } else {
@@ -469,6 +502,9 @@ public class GameView extends View {
         if (mMediaPlayerMainSound != null) {
             mMediaPlayerMainSound.release();
             mMediaPlayerMainSound = null;
+        }
+        if (mHandler != null) {
+            mHandler.removeMessages(0);
         }
     }
 

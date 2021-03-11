@@ -9,6 +9,7 @@ public class SingleTonManager {
     public int[] Score = {0, 0, 0, 0, 0, 0};
     public String[] Name = {"Not Saved", "Not Saved", "Not Saved", "Not Saved", "Not Saved", "Not Saved"};
     public String mRanking="기록이 없습니다.";
+
     // other instance variables can be here
 
     private SingleTonManager() {
@@ -21,7 +22,5 @@ public class SingleTonManager {
         }
         return(INSTANCE);
     }
-
     // other instance methods can follow
-
 }

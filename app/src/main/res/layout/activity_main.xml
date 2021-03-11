@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".Activity.MainActivity">
 
+    <Button
+        android:id="@+id/main_button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:text="정보" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
@@ -32,17 +39,12 @@
             android:text="랭킹" />
 
         <Button
-            android:id="@+id/main_button3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="정보" />
-
-        <Button
             android:id="@+id/main_button4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="게임 종료" />
 
     </LinearLayout>
+
 
 </FrameLayout>

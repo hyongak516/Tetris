@@ -6,17 +6,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.tetris.R;
 import com.example.tetris.View.GameView;
 import com.example.tetris.View.GameListener;
+import com.example.tetris.common.SingleTonManager;
 
 public class GameActivity extends AppCompatActivity implements GameListener {
 
     private Button mLeftBtn;
     private Button mRotateRBtn;
+    private Button mDownBtn;
     private Button mRotateBtn;
     private Button mRightBtn;
 
@@ -29,8 +32,13 @@ public class GameActivity extends AppCompatActivity implements GameListener {
 
         mLeftBtn      = findViewById(R.id.game_button1);
         mRotateRBtn   = findViewById(R.id.game_button2);
-        mRotateBtn    = findViewById(R.id.game_button3);
-        mRightBtn     = findViewById(R.id.game_button4);
+        mDownBtn      = findViewById(R.id.game_button3);
+        mRotateBtn    = findViewById(R.id.game_button4);
+        mRightBtn     = findViewById(R.id.game_button5);
+
+
+
+
 
         mGameView = findViewById(R.id.gameview);
 
@@ -45,6 +53,13 @@ public class GameActivity extends AppCompatActivity implements GameListener {
             @Override
             public void onClick(View v) {
                 mGameView.rotateCounterClockWise();
+            }
+        });
+
+        mDownBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGameView.moveDown();
             }
         });
 

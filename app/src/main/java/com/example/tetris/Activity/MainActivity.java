@@ -21,12 +21,14 @@ public class MainActivity extends AppCompatActivity {
     private Button      mInfoBtn;       //  정보 버튼
     private Button      mGameShutBtn;   //  게임 종료 버튼
 
+    private int         temp = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("hosung.kim", "VERSION ==> 2021.03.09.13.34");
+        Log.d("hosung.kim", "VERSION ==> 2021.03.11.01.10");
 
         mGameStartBtn  = findViewById(R.id.main_button1);
         mRankingBtn    = findViewById(R.id.main_button2);
@@ -58,12 +60,15 @@ public class MainActivity extends AppCompatActivity {
         mInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//              랭킹화면 RankingActivity로 이동======================================================
-                Intent intent = new Intent(MainActivity.this, InfoActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getBaseContext().startActivity(intent);
-//              ===================================================================================]
-
+                temp = temp + 1;
+                if (temp > 9) {
+//                  정보화면 RankingActivity로 이동==================================================
+                    Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getBaseContext().startActivity(intent);
+//                  ===============================================================================]
+                    temp = 0;
+                }
             }
         });
 
