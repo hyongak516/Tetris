@@ -106,8 +106,8 @@ public class GameView extends View {
 
     private int         mTetrominoNull = 0;
     private int         IsFullLine = 0;  //  void checkFullLine
-    private int         mNum=0;          //  openactivity
-    private int         Timer=0;         //  openactivity
+    private int         Timer = 0;       //  openactivity
+    private int         openOnce = 0;    //  openactivity
 
     private Paint       mBlackPaint;
     private Paint       mGrayPaintL;
@@ -228,7 +228,7 @@ public class GameView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mViewHeight = this.getMeasuredHeight();
+        mViewHeight = this.getMeasuredHeight()-16;
         Log.d("hosung.kim", "button height ==> " + (mScreenHeight - mViewHeight));
     }
 
@@ -241,7 +241,7 @@ public class GameView extends View {
                 Timer=Timer+1;
                 drawBackground();
                 mCanvas.drawText("Game Over", mScreenWidth*1/10, mViewHeight/3, mRedPaint);
-                mCanvas.drawText(mScore/25*9 + "초동안 생존하셨습니다.", mScreenWidth*1/10, mViewHeight*2/5, mYellowPaint);
+                mCanvas.drawText(mScore + "라인을 지우셨습니다.", mScreenWidth*1/10, mViewHeight*2/5, mYellowPaint);
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
                 if (Timer > 5) {
                     openGameOverActivity();
@@ -272,7 +272,6 @@ public class GameView extends View {
                 }
                 drawBackgroundnet();
                 checkFullLine();
-                mScore = mScore + 1;
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
             }
             invalidate();
@@ -352,6 +351,7 @@ public class GameView extends View {
                 IsFullLine = IsFullLine + mMap[i][j].Fill;
             }
             if (IsFullLine == 10) {
+                mScore = mScore + 1;
                 for (int k=23; k>3; k--) {
                     if (k <= j) {
                         for (int l=1; l<11; l++) {
@@ -366,136 +366,138 @@ public class GameView extends View {
 
     public void moveLeft() {
         if (isGameOver()) {
-        } else {
-            int ShapeFillorNot = 0;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (mTetromino[mTetrominoNum][j][i] == 1) {
-                        ShapeFillorNot = ShapeFillorNot + mMap[i + 4 + mTetrominoX - 1][j + mTetrominoY].Fill;
-                    }
+            return;
+        }
+        int ShapeFillorNot = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (mTetromino[mTetrominoNum][j][i] == 1) {
+                    ShapeFillorNot = ShapeFillorNot + mMap[i + 4 + mTetrominoX - 1][j + mTetrominoY].Fill;
                 }
             }
-            if (ShapeFillorNot == 0) {
-                drawBackground();
-                drawMap();
-                mTetrominoX = mTetrominoX - 1;
-                drawTetromino();
-                drawBackgroundnet();
-                invalidate();
-            }
+        }
+        if (ShapeFillorNot == 0) {
+            drawBackground();
+            drawMap();
+            mTetrominoX = mTetrominoX - 1;
+            drawTetromino();
+            drawBackgroundnet();
+            invalidate();
         }
     }
 
     public void moveRight() {
         if (isGameOver()) {
-        } else {
-            int ShapeFillorNot = 0;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (mTetromino[mTetrominoNum][j][i] == 1) {
-                        ShapeFillorNot = ShapeFillorNot + mMap[i + 4 + mTetrominoX + 1][j + mTetrominoY].Fill;
-                    }
+            return;
+        }
+        int ShapeFillorNot = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (mTetromino[mTetrominoNum][j][i] == 1) {
+                    ShapeFillorNot = ShapeFillorNot + mMap[i + 4 + mTetrominoX + 1][j + mTetrominoY].Fill;
                 }
             }
-            if (ShapeFillorNot == 0) {
-                drawBackground();
-                drawMap();
-                mTetrominoX = mTetrominoX + 1;
-                drawTetromino();
-                drawBackgroundnet();
-                invalidate();
-            }
+        }
+        if (ShapeFillorNot == 0) {
+            drawBackground();
+            drawMap();
+            mTetrominoX = mTetrominoX + 1;
+            drawTetromino();
+            drawBackgroundnet();
+            invalidate();
         }
     }
 
     public void moveDown() {
         if (isGameOver()) {
-        } else {
-            int ShapeFillorNot = 0;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (mTetromino[mTetrominoNum][j][i] == 1) {
-                        ShapeFillorNot = ShapeFillorNot + mMap[i + 4 + mTetrominoX][j + mTetrominoY + 1].Fill;
-                    }
+            return;
+        }
+        int ShapeFillorNot = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (mTetromino[mTetrominoNum][j][i] == 1) {
+                    ShapeFillorNot = ShapeFillorNot + mMap[i + 4 + mTetrominoX][j + mTetrominoY + 1].Fill;
                 }
             }
-            if (ShapeFillorNot == 0) {
-                drawBackground();
-                drawMap();
-                mTetrominoY = mTetrominoY + 1;
-                drawTetromino();
-                drawBackgroundnet();
-                invalidate();
-            }
         }
+        if (ShapeFillorNot == 0) {
+            drawBackground();
+            drawMap();
+            mTetrominoY = mTetrominoY + 1;
+            drawTetromino();
+            drawBackgroundnet();
+            invalidate();
+        }
+
     }
 
     public void rotateClockWise() {
         if (isGameOver()) {
-        } else {
-            int[][] Temp = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
-            int ShapeFillorNot = 0;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    Temp[i][j] = mTetromino[mTetrominoNum][j][i];
-                }
+            return;
+        }
+        int[][] Temp = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
+        int ShapeFillorNot = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                Temp[i][j] = mTetromino[mTetrominoNum][j][i];
             }
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (mTetromino[mTetrominoNum][j][i] == 1) {
-                        if (0 <= 7 - j + mTetrominoX && 7 - j + mTetrominoX < 12 && 0 <= i + mTetrominoY && i + mTetrominoY < 25) {
-                            ShapeFillorNot = ShapeFillorNot + mMap[7 - j + mTetrominoX][i + mTetrominoY].Fill;
-                        }
+        }
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (mTetromino[mTetrominoNum][j][i] == 1) {
+                    if (0 <= 7 - j + mTetrominoX && 7 - j + mTetrominoX < 12 && 0 <= i + mTetrominoY && i + mTetrominoY < 25) {
+                        ShapeFillorNot = ShapeFillorNot + mMap[7 - j + mTetrominoX][i + mTetrominoY].Fill;
                     }
                 }
             }
-            if (ShapeFillorNot == 0) {
-                for (int i = 0; i < 4; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        mTetromino[mTetrominoNum][i][3 - j] = Temp[i][j];
-                    }
+        }
+        if (ShapeFillorNot == 0) {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    mTetromino[mTetrominoNum][i][3 - j] = Temp[i][j];
                 }
-                drawBackground();
-                drawMap();
-                drawTetromino();
-                drawBackgroundnet();
-                invalidate();
             }
+            drawBackground();
+            drawMap();
+            drawTetromino();
+            drawBackgroundnet();
+            invalidate();
         }
     }
     
     public void rotateCounterClockWise() {
         if (isGameOver()) {
-        } else {
-            int[][] Temp = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
-            int ShapeFillorNot = 0;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    Temp[i][j] = mTetromino[mTetrominoNum][j][i];
-                }
-            }
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (mTetromino[mTetrominoNum][j][i] == 1) {
-                        if (0 <= j + 4 + mTetrominoX && j + 4 + mTetrominoX < 12 && 0 <= 3 - i + mTetrominoY && 3 - i + mTetrominoY < 25) {
-                            ShapeFillorNot = ShapeFillorNot + mMap[j + 4 + mTetrominoX][3 - i + mTetrominoY].Fill;
-                        }
-                    }
-                }
-            }
-            if (ShapeFillorNot == 0) {
-                for (int i = 0; i < 4; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        mTetromino[mTetrominoNum][3 - i][j] = Temp[i][j];
-                    }
-                }
-                drawBackground();
-                drawMap();
-                drawTetromino();
-                drawBackgroundnet();
-                invalidate();
+            return;
+        }
+        int[][] Temp = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
+        int ShapeFillorNot = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                Temp[i][j] = mTetromino[mTetrominoNum][j][i];
             }
         }
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (mTetromino[mTetrominoNum][j][i] == 1) {
+                    if (0 <= j + 4 + mTetrominoX && j + 4 + mTetrominoX < 12 && 0 <= 3 - i + mTetrominoY && 3 - i + mTetrominoY < 25) {
+                        ShapeFillorNot = ShapeFillorNot + mMap[j + 4 + mTetrominoX][3 - i + mTetrominoY].Fill;
+                    }
+                }
+            }
+        }
+        if (ShapeFillorNot == 0) {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    mTetromino[mTetrominoNum][3 - i][j] = Temp[i][j];
+                }
+            }
+            drawBackground();
+            drawMap();
+            drawTetromino();
+            drawBackgroundnet();
+            invalidate();
+        }
+
     }
 
     public void destroy() {
@@ -509,11 +511,11 @@ public class GameView extends View {
     }
 
     void openGameOverActivity() {
-        if (mNum == 0) {
-            SingleTonManager.getInstance().mScore = mScore;
+        if (openOnce == 0) {
+            SingleTonManager.getInstance().Score = mScore;
             mGameListener.openActivity();
         }
-        mNum = mNum + 1;
+        openOnce = openOnce + 1;
     }
 
     @Override

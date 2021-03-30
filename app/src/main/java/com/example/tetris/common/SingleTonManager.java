@@ -4,16 +4,12 @@ public class SingleTonManager {
 
     private static SingleTonManager INSTANCE = null;
 
-    public int mScore;
-    public String mName="";
-    public int[] Score = {0, 0, 0, 0, 0, 0};
-    public String[] Name = {"Not Saved", "Not Saved", "Not Saved", "Not Saved", "Not Saved", "Not Saved"};
-    public String mRanking="기록이 없습니다.";
+    public int Score;
 
     // other instance variables can be here
 
     private SingleTonManager() {
-        this.mScore = 0;
+        this.Score = 0;
     };
 
     public static SingleTonManager getInstance() {

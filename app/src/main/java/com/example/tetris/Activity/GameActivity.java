@@ -78,18 +78,21 @@ public class GameActivity extends AppCompatActivity implements GameListener {
         });
 
         mGameView.setGameListener(this);
+
+        View decorView = getWindow().getDecorView();
+        int uiOptions = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE;
+        }
+        decorView.setSystemUiVisibility(uiOptions);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mGameView.destroy();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        finish();
     }
 
     @Override

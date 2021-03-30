@@ -10,8 +10,20 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.tetris.R;
+import com.example.tetris.common.SingleTonManager;
+import com.example.tetris.common.UserScoreModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 //  ================================================================================================
 //  Hosung Tetris
 //  ================================================================================================
@@ -28,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("hosung.kim", "VERSION ==> 2021.03.11.01.10");
+        Log.d("hosung.kim", "VERSION ==> 2021.03.30.22.12");
 
         mGameStartBtn  = findViewById(R.id.main_button1);
         mRankingBtn    = findViewById(R.id.main_button2);

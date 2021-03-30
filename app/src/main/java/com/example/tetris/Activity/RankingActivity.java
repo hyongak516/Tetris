@@ -22,10 +22,10 @@ public class RankingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        /*SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         SingleTonManager.getInstance().mRanking = pref.getString("Ranking", "기록이 없습니다.");
         mTextView = findViewById(R.id.textView);
-        mTextView.setText(SingleTonManager.getInstance().mRanking);
+        mTextView.setText(SingleTonManager.getInstance().mRanking);*/
 
         mButton = findViewById(R.id.button2);
         mButton.setOnClickListener(new View.OnClickListener() {
