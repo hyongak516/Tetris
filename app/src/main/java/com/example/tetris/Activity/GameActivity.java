@@ -36,10 +36,6 @@ public class GameActivity extends AppCompatActivity implements GameListener {
         mRotateBtn    = findViewById(R.id.game_button4);
         mRightBtn     = findViewById(R.id.game_button5);
 
-
-
-
-
         mGameView = findViewById(R.id.gameview);
 
         mLeftBtn.setOnClickListener(new View.OnClickListener() {
@@ -100,5 +96,6 @@ public class GameActivity extends AppCompatActivity implements GameListener {
         Intent intent = new Intent(this, GameOverActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getBaseContext().startActivity(intent);
+        finish();
     }
 }

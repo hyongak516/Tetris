@@ -32,7 +32,6 @@ public class GameOverActivity extends AppCompatActivity {
 
     private     EditText        mEditText;
     private     Button          mButton;
-    private     GameActivity    mGameActivity;
     private     Handler         mHandler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -41,11 +40,9 @@ public class GameOverActivity extends AppCompatActivity {
             switch (msg.what) {
                 case HANDLER_MESSAGE_TYPE_GAME_OVER:
                     finish();
-                    mGameActivity.finish();
                     break;
 
             }
-
         }
     };
 
@@ -96,44 +93,6 @@ public class GameOverActivity extends AppCompatActivity {
                         mHandler.sendMessage(mHandler.obtainMessage(HANDLER_MESSAGE_TYPE_GAME_OVER));
                     }
                 });
-                /*CharSequence cs = mEditText.getText();
-                SingleTonManager.getInstance().mName = cs.toString();
-
-                mNum = 0;
-                for (int i=0; i<5; i++) {
-                    if (mNum == 0) {
-                        if (SingleTonManager.getInstance().mScore >= SingleTonManager.getInstance().Score[i]) {*/
-                        /*for (int j=0; j<4-i; j++) {
-                            SingleTonManager.getInstance().Score[i+j+1] = SingleTonManager.getInstance().Score[i+j];
-
-                            SingleTonManager.getInstance().Name[i+j+1] = SingleTonManager.getInstance().Name[i+j];
-                        }
-                        SingleTonManager.getInstance().Score[i]=SingleTonManager.getInstance().mScore;
-                        SingleTonManager.getInstance().Name[i]=SingleTonManager.getInstance().mName;*/
-                            /*mNum = mNum + 1;
-                            for (int j = 5 - i; j > 0; j--) {
-                                SingleTonManager.getInstance().Score[i + j] = SingleTonManager.getInstance().Score[i + j - 1];
-
-                                SingleTonManager.getInstance().Name[i + j] = SingleTonManager.getInstance().Name[i + j - 1];
-                            }
-                            SingleTonManager.getInstance().Score[i] = SingleTonManager.getInstance().mScore;
-                            SingleTonManager.getInstance().Name[i] = SingleTonManager.getInstance().mName;
-
-                        }
-                    }
-                }
-                SingleTonManager.getInstance().mRanking = "1. " + SingleTonManager.getInstance().Name[0] + "  -->  " + SingleTonManager.getInstance().Score[0]/25*9 + "초\n"
-                        + "2. " + SingleTonManager.getInstance().Name[1] + "  -->  " + SingleTonManager.getInstance().Score[1]/25*9 + "초\n"
-                        + "3. " + SingleTonManager.getInstance().Name[2] + "  -->  " + SingleTonManager.getInstance().Score[2]/25*9 + "초\n"
-                        + "4. " + SingleTonManager.getInstance().Name[3] + "  -->  " + SingleTonManager.getInstance().Score[3]/25*9 + "초\n"
-                        + "5. " + SingleTonManager.getInstance().Name[4] + "  -->  " + SingleTonManager.getInstance().Score[4]/25*9 + "초\n";
-                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                SharedPreferences.Editor editor = pref.edit();
-
-
-                editor.putString("Ranking", SingleTonManager.getInstance().mRanking);
-                editor.commit();*/
-
             }
         });
 

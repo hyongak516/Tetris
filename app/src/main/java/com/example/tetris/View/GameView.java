@@ -23,6 +23,16 @@ import com.example.tetris.common.SingleTonManager;
 
 import java.util.Random;
 
+ /**
+  * toBeFixed List
+  * -> find the place by Ctrl + f "to be fixed"
+  *
+  * next shape
+  * the number of vertical lines
+  *
+  *
+  */
+
 class Map {
     public int Fill;
     public int PaintNum;
@@ -89,8 +99,11 @@ public class GameView extends View {
     };
     private Map[][]     mMap;
 
-    private final int   MAP_EMPTY = 0;
-    private final int   MAP_FILL = 1;
+    private final int   MAP_EMPTY  = 0;
+    private final int   MAP_FILL   = 1;
+
+    private final int   BLOCK_WIDTH_NUM  = 12;
+    private final int   BLOCK_HEIGHT_NUM = 19;
 
     private int         mScreenWidth;
     private int         mScreenHeight;
@@ -101,6 +114,7 @@ public class GameView extends View {
     private Random      mRandom;
 
     private int         mTetrominoNum;
+    private int         mNextTetrominoNum;
     private int         mTetrominoX = 0;
     private int         mTetrominoY = 0;
 
@@ -141,6 +155,7 @@ public class GameView extends View {
         mGrayPaintL.setColor(Color.rgb(60,63,65));
         mGrayPaintL.setStyle(Paint.Style.STROKE);
         mGrayPaintL.setStrokeWidth(8);
+        mGrayPaintL.setTextSize(70);
 
         mGrayPaintD = new Paint();
         mGrayPaintD.setColor(Color.rgb(43,43,43));
@@ -191,27 +206,30 @@ public class GameView extends View {
 //      ===========================================================================================]
 
 //      (10,20)의 맵 & 맵을 좌우,아래로 둘러싸고있는 가상의 1개의 층 & 위쪽의 4개의 층==================
-        mMap = new Map[12][26];
+        //to be fixed
+
+        mMap = new Map[BLOCK_WIDTH_NUM][BLOCK_HEIGHT_NUM];
+
 //      real map
-        for (int i=1; i<11; i++) {
-            for (int j=4; j<24; j++) {
+        for (int i=1; i<BLOCK_WIDTH_NUM-1; i++) {
+            for (int j=4; j<BLOCK_HEIGHT_NUM-1; j++) {
                 mMap[i][j] = new Map(MAP_EMPTY, 0);
             }
         }
 //      virtual map
-        for (int i=4; i<25; i++) {
+        for (int i=4; i<BLOCK_HEIGHT_NUM; i++) {
             mMap[0][i] = new Map(MAP_FILL, 0);
         }
-        for (int i=4; i<25; i++) {
-            mMap[11][i] = new Map(MAP_FILL, 0);
+        for (int i=4; i<BLOCK_HEIGHT_NUM; i++) {
+            mMap[BLOCK_WIDTH_NUM-1][i] = new Map(MAP_FILL, 0);
         }
-        for (int i=0; i<12; i++) {
+        for (int i=0; i<BLOCK_WIDTH_NUM; i++) {
             for (int j=0; j<4; j++) {
                 mMap[i][j] = new Map(MAP_EMPTY, 0);
             }
         }
-        for (int i=1; i<11; i++) {
-            mMap[i][24] = new Map(MAP_FILL, 0);
+        for (int i=1; i<BLOCK_WIDTH_NUM-1; i++) {
+            mMap[i][BLOCK_HEIGHT_NUM-1] = new Map(MAP_FILL, 0);
         }
 //      ===========================================================================================]
 
@@ -221,6 +239,8 @@ public class GameView extends View {
         mMediaPlayerMainSound.start();
         mMediaPlayerMainSound.setLooping(true);
 //      ===========================================================================================]
+
+        mNextTetrominoNum = mRandom.nextInt(7);
 
         mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
     }
@@ -241,7 +261,7 @@ public class GameView extends View {
                 Timer=Timer+1;
                 drawBackground();
                 mCanvas.drawText("Game Over", mScreenWidth*1/10, mViewHeight/3, mRedPaint);
-                mCanvas.drawText(mScore + "라인을 지우셨습니다.", mScreenWidth*1/10, mViewHeight*2/5, mYellowPaint);
+                mCanvas.drawText(mScore + "점을 획득하셨습니다.", mScreenWidth*1/10, mViewHeight*2/5, mYellowPaint);
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
                 if (Timer > 5) {
                     openGameOverActivity();
@@ -250,8 +270,10 @@ public class GameView extends View {
                 drawBackground();
                 drawMap();
                 if (mTetrominoNull == 0) {
-                    mTetrominoNum = mRandom.nextInt(7);
+                    mTetrominoNum = mNextTetrominoNum;
+                    mNextTetrominoNum = mRandom.nextInt(7);
                     mTetrominoNull = mTetrominoNull +1;
+                    mScore = mScore + 1;
                 }
                 if (canDownTetromino()) {
                     mTetrominoY = mTetrominoY + 1;
@@ -270,6 +292,7 @@ public class GameView extends View {
                     mTetrominoY = 0;
                     mTetrominoNull = 0;
                 }
+                drawMenu();
                 drawBackgroundnet();
                 checkFullLine();
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(), 360);
@@ -287,7 +310,7 @@ public class GameView extends View {
             for (int j=0; j<4; j++) {
                 if (mTetromino[mTetrominoNum][j][i] == MAP_FILL) {
                     if (0 < i + 4 + mTetrominoX && i + 4 + mTetrominoX < 11 && 3 < j + mTetrominoY && j + mTetrominoY < 25) {
-                        mCanvas.drawRect(mScreenWidth * (i + 3 + mTetrominoX) / 10, mViewHeight * (j + mTetrominoY - 4) / 20, mScreenWidth * (i + 4 + mTetrominoX) / 10, mViewHeight * (j + mTetrominoY-3) / 20, mPaint[mTetrominoNum+1]);
+                        mCanvas.drawRect(mScreenWidth * (i + 3 + mTetrominoX) / (BLOCK_WIDTH_NUM-2), mViewHeight * (j + mTetrominoY+2) / (BLOCK_HEIGHT_NUM+1), mScreenWidth * (i + 4 + mTetrominoX) / (BLOCK_WIDTH_NUM-2), mViewHeight * (j + mTetrominoY+3) / (BLOCK_HEIGHT_NUM+1), mPaint[mTetrominoNum+1]);
                     }
                 }
             }
@@ -295,7 +318,7 @@ public class GameView extends View {
     }
 
     boolean canDownTetromino() {
-        int canDownTetrominoNum = 0;
+        int canDownTetrominoNum = MAP_EMPTY;
         for (int i=0; i<4; i++) {
             for (int j=0; j<4; j++) {
                 if (mTetromino[mTetrominoNum][j][i] == 1) {
@@ -303,11 +326,7 @@ public class GameView extends View {
                 }
             }
         }
-        if (canDownTetrominoNum == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return (canDownTetrominoNum == 0);
     }
 
     void drawBackground() {
@@ -315,18 +334,31 @@ public class GameView extends View {
     }
 
     void drawBackgroundnet() {
-        for (int i=0; i<10; i++) {
-            for (int j = 0; j < 20; j++) {
-                mCanvas.drawRect(mScreenWidth * i / 10, mViewHeight * j / 20, mScreenWidth * (i + 1) / 10, mViewHeight * (j + 1) / 20, mGrayPaintL);
+        for (int i=0; i<BLOCK_WIDTH_NUM-2; i++) {
+            for (int j=6; j<BLOCK_HEIGHT_NUM+1; j++) {
+                mCanvas.drawRect(mScreenWidth * i / (BLOCK_WIDTH_NUM-2), mViewHeight * j / (BLOCK_HEIGHT_NUM+1), mScreenWidth * (i + 1) / (BLOCK_WIDTH_NUM-2), mViewHeight * (j + 1) / (BLOCK_HEIGHT_NUM+1), mGrayPaintL);
             }
         }
     }
 
     void drawMap() {
-        for (int i=1; i<11; i++) {
-            for (int j=4; j<25; j++) {
+        for (int i=1; i<(BLOCK_WIDTH_NUM-1); i++) {
+            for (int j=4; j<BLOCK_HEIGHT_NUM-1; j++) {
                 if (mMap[i][j].Fill == MAP_FILL) {
-                    mCanvas.drawRect(mScreenWidth * (i - 1) / 10, mViewHeight * (j - 4) / 20, mScreenWidth * i / 10, mViewHeight * (j - 3) / 20, mPaint[mMap[i][j].PaintNum]);
+                    mCanvas.drawRect(mScreenWidth * (i - 1) / (BLOCK_WIDTH_NUM-2), mViewHeight * (j+2) / (BLOCK_HEIGHT_NUM+1), mScreenWidth * i / (BLOCK_WIDTH_NUM-2), mViewHeight * (j+3) / (BLOCK_HEIGHT_NUM+1), mPaint[mMap[i][j].PaintNum]);
+                }
+            }
+        }
+    }
+
+    void drawMenu() {
+        for (int i=0; i<4; i++) {
+            for (int j=0; j<4; j++) {
+                if (mTetromino[mNextTetrominoNum][i][j] == 1) {
+                    mCanvas.drawText("Next Shape", mScreenWidth / 50, mScreenHeight/15, mYellowPaint);
+                    mCanvas.drawRect(mScreenWidth * (i + 1) / 2 /(BLOCK_WIDTH_NUM - 2), mViewHeight * (j + 3) / 2 /(BLOCK_HEIGHT_NUM + 1), mScreenWidth * (i + 2) / 2 / (BLOCK_WIDTH_NUM - 2), mViewHeight * (j + 4) / 2 / (BLOCK_HEIGHT_NUM + 1), mPaint[mNextTetrominoNum + 1]);
+                    mCanvas.drawRect(mScreenWidth * (i + 1) / 2 /(BLOCK_WIDTH_NUM - 2), mViewHeight * (j + 3) / 2 /(BLOCK_HEIGHT_NUM + 1), mScreenWidth * (i + 2) / 2 / (BLOCK_WIDTH_NUM - 2), mViewHeight * (j + 4) / 2 / (BLOCK_HEIGHT_NUM + 1), mGrayPaintL);
+                    mCanvas.drawText("Score : " + mScore, mScreenWidth*7/10, mScreenHeight/30, mYellowPaint);
                 }
             }
         }
@@ -345,16 +377,16 @@ public class GameView extends View {
     }
 
     void checkFullLine() {
-        for (int j=23; j>3; j--) {
+        for (int j=BLOCK_HEIGHT_NUM-2; j>3; j--) {
             IsFullLine = 0;
-            for (int i=1; i<11; i++) {
+            for (int i=1; i<BLOCK_WIDTH_NUM-1; i++) {
                 IsFullLine = IsFullLine + mMap[i][j].Fill;
             }
             if (IsFullLine == 10) {
-                mScore = mScore + 1;
-                for (int k=23; k>3; k--) {
+                mScore = mScore + 10;
+                for (int k=BLOCK_HEIGHT_NUM-2; k>3; k--) {
                     if (k <= j) {
-                        for (int l=1; l<11; l++) {
+                        for (int l=1; l<BLOCK_WIDTH_NUM-1; l++) {
                             mMap[l][k].Fill      = mMap[l][k-1].Fill;
                             mMap[l][k].PaintNum  = mMap[l][k-1].PaintNum;
                         }
@@ -379,6 +411,7 @@ public class GameView extends View {
         if (ShapeFillorNot == 0) {
             drawBackground();
             drawMap();
+            drawMenu();
             mTetrominoX = mTetrominoX - 1;
             drawTetromino();
             drawBackgroundnet();
@@ -401,6 +434,7 @@ public class GameView extends View {
         if (ShapeFillorNot == 0) {
             drawBackground();
             drawMap();
+            drawMenu();
             mTetrominoX = mTetrominoX + 1;
             drawTetromino();
             drawBackgroundnet();
@@ -423,6 +457,7 @@ public class GameView extends View {
         if (ShapeFillorNot == 0) {
             drawBackground();
             drawMap();
+            drawMenu();
             mTetrominoY = mTetrominoY + 1;
             drawTetromino();
             drawBackgroundnet();
@@ -459,6 +494,7 @@ public class GameView extends View {
             }
             drawBackground();
             drawMap();
+            drawMenu();
             drawTetromino();
             drawBackgroundnet();
             invalidate();
@@ -493,6 +529,7 @@ public class GameView extends View {
             }
             drawBackground();
             drawMap();
+            drawMenu();
             drawTetromino();
             drawBackgroundnet();
             invalidate();
@@ -532,3 +569,6 @@ public class GameView extends View {
     }
 
 }
+
+// to be fixed -> draw functions & Score part
+//                start & stop

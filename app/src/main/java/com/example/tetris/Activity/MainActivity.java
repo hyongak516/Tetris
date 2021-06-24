@@ -25,7 +25,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 //  ================================================================================================
-//  Hosung Tetris
+/**
+ * Tetris
+ *
+ * Created by Hosung.Kim
+ * Final Update : 2021.03.30.22.13
+ *
+ * AppName   : Tetris
+ * Language  : Java
+ * Tool      : Android Studio
+ * Developer : Hosung.Kim
+ * Contact   : hyongak516@mail.hongik.ac.kr
+ * Github    : https://github.com/hyongak516
+ */
 //  ================================================================================================
 public class MainActivity extends AppCompatActivity {
     private Button      mGameStartBtn;  //  게임 시작 버튼
@@ -40,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("hosung.kim", "VERSION ==> 2021.03.30.22.12");
+        Log.d("hosung.kim", "VERSION ==> 2021.06.22.15.17");
 
         mGameStartBtn  = findViewById(R.id.main_button1);
         mRankingBtn    = findViewById(R.id.main_button2);
@@ -50,22 +62,18 @@ public class MainActivity extends AppCompatActivity {
         mGameStartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//              게임 시작  GameActivity로 이동=======================================================
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getBaseContext().startActivity(intent);
-//              ===================================================================================]
             }
         });
 
         mRankingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//              랭킹화면 RankingActivity로 이동======================================================
                 Intent intent = new Intent(MainActivity.this, RankingActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getBaseContext().startActivity(intent);
-//              ===================================================================================]
             }
         });
 
@@ -74,11 +82,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 temp = temp + 1;
                 if (temp > 9) {
-//                  정보화면 RankingActivity로 이동==================================================
                     Intent intent = new Intent(MainActivity.this, InfoActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getBaseContext().startActivity(intent);
-//                  ===============================================================================]
                     temp = 0;
                 }
             }
@@ -87,9 +93,7 @@ public class MainActivity extends AppCompatActivity {
         mGameShutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//              MainActivity 종료===================================================================
                 GameShutDlg();
-//              ===================================================================================]
             }
         });
 
@@ -97,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//  MainActivity 종료 dialog========================================================================
     void GameShutDlg() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("게임 종료");
@@ -115,5 +118,4 @@ public class MainActivity extends AppCompatActivity {
                 });
         builder.show();
     }
-//  ===============================================================================================]
 }
